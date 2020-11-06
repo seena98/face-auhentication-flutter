@@ -31,7 +31,7 @@ class CustomImageHolder extends StatelessWidget{
         )),
         Center(
           child: GestureDetector(
-            onTap: ()=>onTap,//TODO capture image
+            onTap: onTap,//TODO capture image
             child: Container(
               height: ScreenUtil().setHeight(450),
               width: ScreenUtil().setHeight(450),

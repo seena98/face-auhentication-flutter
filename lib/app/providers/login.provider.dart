@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
+import 'package:dio/dio.dart';
 import 'package:face_detection/app/models/login.model.dart';
 import 'package:face_detection/app/repository/api.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,19 @@ class LoginProvider extends ChangeNotifier{
 
   Future login() async{
     changeLoadingState(true);
-    var res = await ApiRequests().login(image);
-    data = LoginModel.fromJson(res);
+    var img = await image.readAsBytes();
+    try {
+      var res = await ApiRequests().login(img);
+//      var res = await ApiRequests().register('mohammad','mahmooodi','${UniqueKey()}@qwe.rr',img);
+      print(res);
+      if((res).response.statusCode == 404)
+        BotToast.showSimpleNotification(title: "USER NOT FOUND :)",backgroundColor: Colors.red);
+      else
+        data = LoginModel.fromJson(res);
+    }catch(e){
+      print("error in login : $e");
+      BotToast.showSimpleNotification(title: "Some error occurred ..");
+    }
     changeLoadingState(false);
   }
 
