@@ -19,7 +19,7 @@ class LoginView extends StatelessWidget{
         child: Consumer<LoginProvider>(
           builder: (context,value,child){
             if(value.data == null)
-              return child;
+              return CustomImageHolder("جهت اهراز هویت تصویر واضحی از خود بگیرید",onTap: ()=>value.getImage());
             return Center(
               child: ListView(
                 shrinkWrap: true,
@@ -33,7 +33,6 @@ class LoginView extends StatelessWidget{
               ),
             );
           },
-          child: CustomImageHolder("جهت اهراز هویت تصویر واضحی از خود بگیرید"),
         ),
       ),
       drawer: Drawer(

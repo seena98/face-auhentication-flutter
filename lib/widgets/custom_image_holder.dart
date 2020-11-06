@@ -1,3 +1,4 @@
+import 'package:face_detection/widgets/custom_button.dart';
 import 'package:face_detection/widgets/widget_blinker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_screenutil/screenutil.dart';
 class CustomImageHolder extends StatelessWidget{
   final text;
   final imageFilePath;
-  bool isBlinking;
-  CustomImageHolder(this.text,{this.imageFilePath,this.isBlinking = true});
+  final bool isBlinking;
+  final onTap;
+  final loginCallback;
+  CustomImageHolder(this.text,{this.loginCallback,this.imageFilePath,this.isBlinking = true,this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class CustomImageHolder extends StatelessWidget{
         )),
         Center(
           child: GestureDetector(
-            onTap: ()=>null,//TODO capture image
+            onTap: ()=>onTap,//TODO capture image
             child: Container(
               height: ScreenUtil().setHeight(450),
               width: ScreenUtil().setHeight(450),
@@ -48,6 +51,13 @@ class CustomImageHolder extends StatelessWidget{
             ),
           ),
         ),
+        SizedBox(
+          height: ScreenUtil().setHeight(20),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomButton(text: "ورود", onPressed: loginCallback,isPrimary: true,),
+        )
       ],
     ):
     Column(
@@ -65,7 +75,7 @@ class CustomImageHolder extends StatelessWidget{
         ),
         Center(
           child: GestureDetector(
-            onTap: ()=>null,//TODO capture image
+            onTap: ()=>onTap,//TODO capture image
             child: Container(
               height: ScreenUtil().setHeight(450),
               width: ScreenUtil().setHeight(450),
@@ -85,7 +95,13 @@ class CustomImageHolder extends StatelessWidget{
             ),
           ),
         ),
-      ],
+        SizedBox(
+          height: ScreenUtil().setHeight(20),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomButton(text: "ورود", onPressed: loginCallback,isPrimary: true,),
+        )      ],
     );
   }
 
