@@ -3,7 +3,7 @@ import 'package:face_detection/app/config/config.dart';
 import 'package:http_parser/http_parser.dart';
 
 class ApiRequests {
-  Future<dynamic> login(image) async {
+  Future<Response> login(image) async {
     var request = await _getAuthRequester();
     try {
       var res = await request.post(LOGIN,
@@ -13,12 +13,12 @@ class ApiRequests {
                 filename:
                     "login_image_at_${DateTime.now().toIso8601String()}.jpg"),
           }));
-      return res.data;
+      return res;
     } catch (e) {
       print("incoming argument as PATH is : $LOGIN");
       for (var t in e.response.toString().split("\n")) print(t);
       print((e as DioError).error);
-      return (e as DioError);
+      return e.response;
     }
   }
 

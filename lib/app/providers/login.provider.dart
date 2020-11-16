@@ -19,17 +19,20 @@ class LoginProvider extends ChangeNotifier {
   }
 
   Future login() async {
+    data = null;
     changeLoadingState(true);
     var img = await image.readAsBytes();
     try {
       var res = await ApiRequests().login(img);
 //      var res = await ApiRequests().register('mohammad','mahmooodi','${UniqueKey()}@qwe.rr',img);
       print(res);
-      if ((res).response.statusCode == 404)
+      if (res.statusCode == 404)
         BotToast.showSimpleNotification(
             title: "USER NOT FOUND :)", backgroundColor: Colors.red);
-      else
-        data = LoginModel.fromJson(res);
+      else if (res.statusCode == 400)
+        BotToast.showSimpleNotification(
+            title: res.data, backgroundColor: Colors.red);
+      else if (res.statusCode == 200) data = LoginModel.fromJson(res.data);
     } catch (e) {
       print("error in login : $e");
       BotToast.showSimpleNotification(title: "Some error occurred ..");
