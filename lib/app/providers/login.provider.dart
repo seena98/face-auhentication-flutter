@@ -42,6 +42,7 @@ class LoginProvider extends ChangeNotifier {
 
   Future getImage() async {
     final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+    if (pickedFile == null) return;
     File croppedFile = await ImageCropper.cropImage(
         sourcePath: pickedFile.path,
         aspectRatioPresets: [
@@ -51,6 +52,7 @@ class LoginProvider extends ChangeNotifier {
         ],
         maxWidth: 500,
         maxHeight: 500,
+        compressFormat: ImageCompressFormat.jpg,
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop your face',
             toolbarColor: Color(0xff0F495C),
@@ -64,6 +66,12 @@ class LoginProvider extends ChangeNotifier {
           minimumAspectRatio: 1.0,
         ));
     image = File(croppedFile.path);
+    notifyListeners();
+  }
+
+  logOut() {
+    image = null;
+    data = null;
     notifyListeners();
   }
 }

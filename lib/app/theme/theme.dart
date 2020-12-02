@@ -13,6 +13,7 @@ const Color grayBlueForProgress = Color(0xff0F495C);
 const Color goldenColorLightMode = Color(0xffFFC736);
 const Color silverColorLightMode = Color(0xff474747);
 const Color bronzeColorLightMode = Color(0xff8B4403);
+
 class ThemeProvider extends ChangeNotifier {
   ThemeProvider() {
     var mode = StorageService.instance().getStorage.getString('THEME_MODE');
@@ -74,41 +75,30 @@ class ThemeProvider extends ChangeNotifier {
             color: Color(0xff0F495C).withOpacity(.5),
           )),
       textTheme: TextTheme(
-        subhead: TextStyle(
-          fontFamily: 'Shabnam',
-          color: Colors.white
-        ),
-        body1: TextStyle(
-          fontFamily: 'Shabnam',
-          color: Colors.white,
-        ),
-        body2: TextStyle(
-          fontFamily: 'Shabnam',
-          color: Colors.black,
-        ),
-        button: TextStyle(
-          fontFamily: 'Shabnam',
-        )
-      ),
+          subhead: TextStyle(fontFamily: 'Shabnam', color: Colors.white),
+          body1: TextStyle(
+            fontFamily: 'Shabnam',
+            color: Colors.white,
+          ),
+          body2: TextStyle(
+            fontFamily: 'Shabnam',
+            color: Colors.black,
+          ),
+          button: TextStyle(
+            fontFamily: 'Shabnam',
+          )),
     );
   }
 
   ThemeData _getLightMode() {
     return ThemeData.light().copyWith(
       accentColor: Color(0xff0F495C),
-
       primaryColor: Color(0xffF4F4F4),
       errorColor: Color(0xffFF3B3B),
-      backgroundColor: Color(0xffFFFFFF),
-      accentIconTheme: IconThemeData(
-          color: Color(0xff0F495C)
-      ),
-      primaryIconTheme: IconThemeData(
-          color: Color(0xff0F495C)
-      ),
-      iconTheme: IconThemeData(
-        color: Color(0xff0F495C)
-      ),
+      backgroundColor: Color(0xffFFFFFF).withOpacity(.3),
+      accentIconTheme: IconThemeData(color: Color(0xff0F495C)),
+      primaryIconTheme: IconThemeData(color: Color(0xff0F495C)),
+      iconTheme: IconThemeData(color: Color(0xff0F495C)),
       inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(fontFamily: 'Shabnam'),
           border: OutlineInputBorder(
@@ -134,13 +124,12 @@ class ThemeProvider extends ChangeNotifier {
             color: Color(0xff0F495C).withOpacity(.5),
           )),
       textTheme: TextTheme(
-        subhead: TextStyle(fontFamily: 'Shabnam', color: Colors.black),
-        body1: TextStyle(fontFamily: 'Shabnam', color: Colors.black),
-        body2: TextStyle(fontFamily: 'Shabnam', color: Colors.white),
-        button: TextStyle(
-          fontFamily: 'Shabnam',
-        )
-      ),
+          subhead: TextStyle(fontFamily: 'Shabnam', color: Colors.black),
+          body1: TextStyle(fontFamily: 'Shabnam', color: Colors.black),
+          body2: TextStyle(fontFamily: 'Shabnam', color: Colors.white),
+          button: TextStyle(
+            fontFamily: 'Shabnam',
+          )),
     );
   }
 }

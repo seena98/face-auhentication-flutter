@@ -8,7 +8,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
         designSize: Size(800, 1280), allowFontScaling: false);
-    return LoginView();
+//    return LoginView();
     return AnimatedSplashScreen(
         duration: 3000, //sec
         splash: Icons.tag_faces_sharp,

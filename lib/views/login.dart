@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:face_detection/app/providers/login.provider.dart';
 import 'package:face_detection/widgets/custom_button.dart';
 import 'package:face_detection/widgets/custom_drawer_item.dart';
@@ -46,95 +48,91 @@ class _LoginViewState extends State<LoginView>
               color: Theme.of(context).accentColor),
         ),
       ),
-      body: ChangeNotifierProvider(
-        create: (_) => LoginProvider(),
-        child: Consumer<LoginProvider>(
-          builder: (context, value, child) {
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                WidgetBlinker(Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: ScreenUtil().setHeight(20)),
-                  child: Text(
-                    value.data == null
-                        ? "جهت اهراز هویت تصویر واضحی از خود انتخاب کنید"
-                        : value.data.firstName + " " + value.data.lastName,
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(35),
-                        fontWeight: FontWeight.bold),
-                  ),
-                )),
-                Center(
-                  child: Container(
-                    height: ScreenUtil().setHeight(470),
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        Center(
-                          child: GestureDetector(
-                            onTap: () => value.isLoading
-                                ? null
-                                : value.getImage(), //TODO capture image
-                            child: Container(
-                              height: ScreenUtil().setHeight(450),
-                              width: ScreenUtil().setHeight(450),
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).accentColor,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                          ScreenUtil().setWidth(50)))),
-                              child: value.image == null
-                                  ? Center(
-                                      child: Icon(
-                                        Icons.photo_camera,
-                                        color: Colors.white,
-                                        size: ScreenUtil().setWidth(300),
-                                      ),
-                                    )
-                                  : Image.file(
-                                      value.image,
-                                      fit: BoxFit.contain,
+      body: Consumer<LoginProvider>(
+        builder: (context, value, child) {
+          return Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              WidgetBlinker(Padding(
+                padding:
+                    EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(20)),
+                child: Text(
+                  value.data == null
+                      ? "جهت اهراز هویت تصویر واضحی از خود انتخاب کنید"
+                      : value.data.firstName + " " + value.data.lastName,
+                  style: TextStyle(
+                      fontSize: ScreenUtil().setSp(35),
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
+              Center(
+                child: Container(
+                  height: ScreenUtil().setHeight(470),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Center(
+                        child: GestureDetector(
+                          onTap: () => value.isLoading
+                              ? null
+                              : value.getImage(), //TODO capture image
+                          child: Container(
+                            height: ScreenUtil().setHeight(450),
+                            width: ScreenUtil().setHeight(450),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).accentColor,
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    ScreenUtil().setWidth(50)))),
+                            child: value.image == null
+                                ? Center(
+                                    child: Icon(
+                                      Icons.photo_camera,
+                                      color: Colors.white,
+                                      size: ScreenUtil().setWidth(300),
                                     ),
-                            ),
+                                  )
+                                : Image.file(
+                                    value.image,
+                                    fit: BoxFit.contain,
+                                  ),
                           ),
                         ),
-                        !value.isLoading
-                            ? Container()
-                            : AnimatedBuilder(
-                                animation: _controller,
-                                builder: (context, child) {
-                                  return Transform.translate(
-                                    child: Container(
-                                        width: double.maxFinite,
-                                        height: 10,
-                                        color: Colors.red),
-                                    offset: Offset(0, animation.value),
-                                  );
-                                }),
-                      ],
-                    ),
+                      ),
+                      !value.isLoading
+                          ? Container()
+                          : AnimatedBuilder(
+                              animation: _controller,
+                              builder: (context, child) {
+                                return Transform.translate(
+                                  child: Container(
+                                      width: double.maxFinite,
+                                      height: 10,
+                                      color: Colors.red),
+                                  offset: Offset(0, animation.value),
+                                );
+                              }),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(20),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: IgnorePointer(
-                    ignoring: value.isLoading ?? false,
-                    child: CustomButton(
-                      text: value.isLoading ? "در حال پردازش" : "ورود",
-                      onPressed: () => value.login(),
-                      isPrimary: true,
-                    ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(20),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IgnorePointer(
+                  ignoring: value.isLoading ?? false,
+                  child: CustomButton(
+                    text: value.isLoading ? "در حال پردازش" : "ورود",
+                    onPressed: () => value.login(),
+                    isPrimary: true,
                   ),
-                )
-              ],
-            );
-          },
-        ),
+                ),
+              )
+            ],
+          );
+        },
       ),
       drawer: Drawer(
         child: Column(
@@ -149,11 +147,25 @@ class _LoginViewState extends State<LoginView>
                   children: [
                     Expanded(
                       child: CircleAvatar(
-                        child: Text("MC"),
+                        backgroundImage:
+                            Provider.of<LoginProvider>(context).data == null
+                                ? null
+                                : FileImage(
+                                    Provider.of<LoginProvider>(context).image),
+                        child: Provider.of<LoginProvider>(context).data == null
+                            ? Icon(
+                                Icons.person,
+                                size: 35,
+                              )
+                            : Container(),
                         radius: 80,
                       ),
                     ),
-                    Text("New login method..")
+                    Text(Provider.of<LoginProvider>(context).data != null
+                        ? Provider.of<LoginProvider>(context).data.firstName +
+                            " " +
+                            Provider.of<LoginProvider>(context).data.lastName
+                        : "Just try our New login method! :)")
                   ],
                 ),
                 duration: Duration(seconds: 2),
@@ -165,16 +177,19 @@ class _LoginViewState extends State<LoginView>
               () => Navigator.pushNamed(context, "register"),
             ),
             CustomDrawerItem(
-              "Call-Me",
-              () => Navigator.pushNamed(context, "register"),
-            ),
-            CustomDrawerItem(
-              "Developers",
-              () => Navigator.pushNamed(context, "Developers"),
+              "LogOut",
+              () {
+                Provider.of<LoginProvider>(context, listen: false).logOut();
+                Navigator.of(context).maybePop();
+              },
             ),
             Spacer(),
             Text(
-              "SRU UNIVERSITY",
+              "SRU UNIVERSITY\n"
+              "-------------------------\n"
+              "MohammadSeyedMahmoudi\n"
+              "SinaAshrafPour",
+              textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(30),
                   fontWeight: FontWeight.bold,
