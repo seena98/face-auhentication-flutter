@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:face_detection/app/providers/login.provider.dart';
 import 'package:face_detection/widgets/custom_button.dart';
 import 'package:face_detection/widgets/custom_drawer_item.dart';
@@ -64,6 +62,7 @@ class _LoginViewState extends State<LoginView>
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(35),
                       fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
               )),
               Center(
@@ -174,7 +173,10 @@ class _LoginViewState extends State<LoginView>
             ),
             CustomDrawerItem(
               "Sign-Up",
-              () => Navigator.pushNamed(context, "register"),
+              () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "register");
+              },
             ),
             CustomDrawerItem(
               "LogOut",
