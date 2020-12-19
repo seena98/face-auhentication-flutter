@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -16,9 +17,22 @@ class _LoginViewState extends State<LoginView>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> animation;
+  SharedPreferences prefs;
+  var userEmail;
 
+  ///pref init
+  Future<void> setPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  ///pref init end
   @override
   void initState() {
+    ///pref call
+    setPref();
+    userEmail = prefs.getString("email");
+
+    ///pref call end
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
@@ -171,20 +185,23 @@ class _LoginViewState extends State<LoginView>
                 padding: EdgeInsets.all(ScreenUtil().setHeight(20)),
               ),
             ),
-            CustomDrawerItem(
-              "Sign-Up",
-              () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, "register");
-              },
-            ),
-            CustomDrawerItem(
-              "LogOut",
-              () {
-                Provider.of<LoginProvider>(context, listen: false).logOut();
-                Navigator.of(context).maybePop();
-              },
-            ),
+
+            ///userEmail null check
+            if (userEmail != null)
+              CustomDrawerItem(
+                "Sign-Up",
+                () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, "register");
+                },
+              ),
+            // CustomDrawerItem(
+            //   "LogOut",
+            //   () {
+            //     Provider.of<LoginProvider>(context, listen: false).logOut();
+            //     Navigator.of(context).maybePop();
+            //   },
+            // ),
             Spacer(),
             Text(
               "SRU UNIVERSITY\n"

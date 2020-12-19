@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:face_detection/app/models/login.model.dart';
 import 'package:face_detection/app/repository/api.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginProvider extends ChangeNotifier {
   bool isLoading = false;
@@ -32,7 +32,14 @@ class LoginProvider extends ChangeNotifier {
       else if (res.statusCode == 400)
         BotToast.showSimpleNotification(
             title: res.data, backgroundColor: Colors.red);
-      else if (res.statusCode == 200) data = LoginModel.fromJson(res.data);
+      else if (res.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var userEmail = prefs.getString("email");
+        if (LoginModel.fromJson(res.data).email == userEmail)
+          data = LoginModel.fromJson(res.data);
+        else
+          BotToast.showSimpleNotification(title: "User not Authenticated...");
+      }
     } catch (e) {
       print("error in login : $e");
       BotToast.showSimpleNotification(title: "Some error occurred ..");

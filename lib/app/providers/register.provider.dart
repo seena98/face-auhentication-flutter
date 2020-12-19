@@ -7,6 +7,7 @@ import 'package:face_detection/app/repository/api.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterProvider extends ChangeNotifier {
   bool isLoading = false;
@@ -78,6 +79,8 @@ class RegisterProvider extends ChangeNotifier {
     if ((res as Response).statusCode == 201) {
       try {
         print("register was success, searching for not accepted images");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("email", email);
         var response;
         response = res.data.toString().replaceFirst("[", "");
         response = response.toString().replaceFirst("]", "");
