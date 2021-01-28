@@ -1,4 +1,5 @@
 import 'package:face_detection/app/providers/login.provider.dart';
+import 'package:face_detection/app/providers/storage_service.dart';
 import 'package:face_detection/widgets/custom_button.dart';
 import 'package:face_detection/widgets/custom_drawer_item.dart';
 import 'package:face_detection/widgets/widget_blinker.dart';
@@ -20,19 +21,13 @@ class _LoginViewState extends State<LoginView>
   SharedPreferences prefs;
   var userEmail;
 
-  ///pref init
-  Future<void> setPref() async {
-    prefs = await SharedPreferences.getInstance();
-  }
 
-  ///pref init end
+
   @override
   void initState() {
-    ///pref call
-    setPref();
-    userEmail = prefs.getString("email");
 
-    ///pref call end
+    userEmail = StorageService.instance()..getStorage.getString("email");
+
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
@@ -66,6 +61,19 @@ class _LoginViewState extends State<LoginView>
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Padding(
+                padding:
+                EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(20)),
+                child: Text(
+                  value.data == null
+                      ? ""
+                      : "USER VERIFIED",
+                  style: TextStyle(
+                      fontSize: ScreenUtil().setSp(35),
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               WidgetBlinker(Padding(
                 padding:
                     EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(20)),

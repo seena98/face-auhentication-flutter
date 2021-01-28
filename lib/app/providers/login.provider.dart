@@ -28,10 +28,10 @@ class LoginProvider extends ChangeNotifier {
       print(res);
       if (res.statusCode == 404)
         BotToast.showSimpleNotification(
-            title: "USER NOT FOUND :)", backgroundColor: Colors.red);
+            title: "USER NOT VERIFIED", backgroundColor: Colors.red);
       else if (res.statusCode == 400)
         BotToast.showSimpleNotification(
-            title: res.data, backgroundColor: Colors.red);
+            title: "USER NOT VERIFIED", backgroundColor: Colors.red);
       else if (res.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userEmail = prefs.getString("email");
