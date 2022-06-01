@@ -29,8 +29,6 @@ class _LoginViewState extends State<LoginView>
   @override
   void initState() {
     ///pref call
-    setPref();
-    userEmail = prefs.getString("email");
 
     ///pref call end
     super.initState();
@@ -187,14 +185,14 @@ class _LoginViewState extends State<LoginView>
             ),
 
             ///userEmail null check
-            if (userEmail != null)
-              CustomDrawerItem(
-                "Sign-Up",
-                () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, "register");
-                },
-              ),
+
+            CustomDrawerItem(
+              "Sign-Up",
+              () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "register");
+              },
+            ),
             // CustomDrawerItem(
             //   "LogOut",
             //   () {

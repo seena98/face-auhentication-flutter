@@ -35,10 +35,12 @@ class LoginProvider extends ChangeNotifier {
       else if (res.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userEmail = prefs.getString("email");
-        if (LoginModel.fromJson(res.data).email == userEmail)
-          data = LoginModel.fromJson(res.data);
-        else
-          BotToast.showSimpleNotification(title: "User not Authenticated...");
+        if (userEmail != null) {
+          if (LoginModel.fromJson(res.data).email == userEmail)
+            data = LoginModel.fromJson(res.data);
+          else
+            BotToast.showSimpleNotification(title: "User not Authenticated...");
+        }
       }
     } catch (e) {
       print("error in login : $e");
